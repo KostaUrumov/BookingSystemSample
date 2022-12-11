@@ -46,23 +46,7 @@ namespace BookingSystem
                         break;
                     }
                     Console.WriteLine("Where do you want to stay. Select a hotel from the list");
-                    for (int i = 0; i < hotelsAvailable.Count; i++)
-                    {
-                        if (i == hotelsAvailable.Count - 1)
-                        {
-                            Console.WriteLine($"{hotelsAvailable[i].Name}.");
-                        }
-                        else
-                        {
-                            Console.Write($"{hotelsAvailable[i].Name}, ");
-                        }
-
-                    }
                     string nameOfTheHotel = Console.ReadLine();
-                    if (!hotelsAvailable.Any(c => c.Name == nameOfTheHotel))
-                    {
-                        continue;
-                    }
                     foreach (var hot in hotelsAvailable)
                     {
                         if (hot.Name == nameOfTheHotel)
@@ -83,8 +67,6 @@ namespace BookingSystem
                                 }
                                 else
                                 {
-                                    Console.WriteLine("We do not have available rooms for that perio. Select another period." +
-                                        "");
                                     continue;
                                 }
 

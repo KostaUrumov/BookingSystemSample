@@ -112,15 +112,6 @@ namespace BookingSystem.Classes
         public override void Reserve(People person)
         {
             reservations.Add(person);
-            Room room = new Room(person.Start, person.End);
-            if (person.RoomType == "1")
-            {
-                luxury.Add(room);
-            }
-            if (person.RoomType == "2")
-            {
-                roomsD.Add(room); 
-            }
 
         }
 
