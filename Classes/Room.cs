@@ -7,17 +7,20 @@ namespace BookingSystem.Classes
     public class Room
     {
         private decimal price;
-        public Room(string season, string hotelType, string type)
+        public Room(string season, string hotelType, string type, decimal price)
         {
             Season = season;
             HotelType = hotelType;
+            Type = type;
+            Price = price;
         }
 
         public string Season { get; private set; }
         public string HotelType { get; private set; }
         public string Type { get; private set; }
 
-        public  decimal Price
+
+        public decimal Price
         {  get => price;
             private set
             {
@@ -25,24 +28,22 @@ namespace BookingSystem.Classes
                 {
                     if (this.Type == "1")
                     {
-                        this.Price = 65;
+                        this.price = 65;
                     }
                     else
                     {
-                        this.Price = 58;
+                        this.price = 58;
                     }
-                    
-
                 }
                 if (this.Season == "Winter" && this.HotelType == "high")
                 {
                     if (this.Type == "1")
                     {
-                        this.Price = 75;
+                        this.price = 75;
                     }
                     else
                     {
-                        this.Price = 65;
+                        this.price = 65;
                     }
 
                 }
@@ -50,52 +51,54 @@ namespace BookingSystem.Classes
                 {
                     if (this.Type == "1")
                     {
-                        this.Price = 50;
+                        this.price = 50;
                     }
                     else
                     {
-                        this.Price = 43;
+                        this.price = 43;
                     }
                 }
                 if ((this.Season == "Autumn" || this.Season == "Spring") && this.HotelType == "high")
                 {
                     if (this.Type == "1")
                     {
-                        this.Price = 62;
+                        this.price = 62;
                     }
                     else
                     {
-                        this.Price = 54;
+                        this.price = 54;
                     }
                 }
                 if (this.Season == "Summer" && this.HotelType == "mid" )
                 {
                     if (this.Type == "1")
                     {
-                        this.Price = 63;
+                        this.price = 63;
                     }
                     else
                     {
-                        this.Price = 60;
+                        this.price = 60;
                     }
                 }
                 if (this.Season == "Summer" && this.HotelType == "high")
                 {
                     if (this.Type == "1")
                     {
-                        this.Price = 90;
+                        this.price = 90;
                     }
                     else
                     {
-                        this.Price = 78;
+                        this.price = 78;
                     }
                 }
-
-
             }
+        }
 
 
-        }    
+        public void SettingPrice()
+        {
+            
+        }
                
         
         

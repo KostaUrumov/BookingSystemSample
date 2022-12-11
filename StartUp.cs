@@ -91,20 +91,21 @@ namespace BookingSystem
 
                                         if (season == "Winter")
                                         {
-                                            room = new Room("Winter", hot.Class, "1");
+                                            room = new Room("Winter", hot.Class, "1", 0);
                                         }
                                         if (season == "Summer")
                                         {
-                                            room = new Room("Winter", hot.Class, "1");
+                                            room = new Room("Winter", hot.Class, "1", 0);
                                         }
                                         if (season == "Autumn")
                                         {
-                                            room = new Room("Winter", hot.Class, "1");
+                                            room = new Room("Winter", hot.Class, "1", 0);
                                         }
                                         if (season == "Spring")
                                         {
-                                            room = new Room("Winter", hot.Class, "1");
+                                            room = new Room("Winter", hot.Class, "1", 0);
                                         }
+                                        
                                         Console.WriteLine($"Total payment is {hot.Payment(person, room),0:f2}");
                                         thisPersonReserved++;
                                         break;
@@ -126,20 +127,20 @@ namespace BookingSystem
                                         Console.WriteLine($"{person.Firstname} {person.Lastname} reserved {nameOfTheHotel} from {person.Start} until {person.End}");
                                         if (hot.CheckSeason(person) == "Winter")
                                         {
-                                            room = new Room("Winter", hot.Class, "2");
+                                            room = new Room("Winter", hot.Class, "2", 0);
 
                                         }
                                         if (hot.CheckSeason(person) == "Spring")
                                         {
-                                            room = new Room("Winter", hot.Class, "2");
+                                            room = new Room("Winter", hot.Class, "2", 0);
                                         }
                                         if (hot.CheckSeason(person) == "Summer")
                                         {
-                                            room = new Room("Winter", hot.Class, "2");
+                                            room = new Room("Winter", hot.Class, "2", 0);
                                         }
                                         if (hot.CheckSeason(person) == "Autumn")
                                         {
-                                            room = new Room("Winter", hot.Class, "2");
+                                            room = new Room("Winter", hot.Class, "2", 0);
                                         }
                                         Console.WriteLine($"Total payment is {hot.Payment(person, room),0:f2}");
                                         break;
