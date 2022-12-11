@@ -16,9 +16,7 @@ namespace BookingSystem.Classes
             reservations = new List<People>();
             luxury= new List<Room>();
             roomsD = new List<Room>();
-           
         }
-
         public decimal DoubleRoomCost
         {
             get => this.doubleRoomCost;
@@ -143,6 +141,5 @@ namespace BookingSystem.Classes
 
             return toReturn.ToString();
         }
-
     }
 }

@@ -14,7 +14,6 @@ namespace BookingSystem.Classes
             this.Start = start;
             this.End = end;
         }
-
         public DateTime Start { get => this.start; private set { this.start = value; } }
         public DateTime End { get=> this.end; private set { this.end = value; } }
     }

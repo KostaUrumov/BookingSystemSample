@@ -16,11 +16,9 @@ namespace BookingSystem.Classes
             DoubleRoomsCount = doubleRooms;
             LuxuryRoomsCount = luxuryRooms;
             Class = sss;
-
         }
 
         public string Name { get; private set; }
-
         public int DoubleRoomsCount { get; private set; }
         public int LuxuryRoomsCount { get; private set; }
         public string Class { get; private set; }
