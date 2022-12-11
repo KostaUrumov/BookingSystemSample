@@ -87,19 +87,21 @@ namespace BookingSystem
                                         People person = new People(names[0], names[1], startDate, endDate, totalGuests, roomtype);
                                         hot.Reserve(person);
                                         Console.WriteLine($"{person.Firstname} {person.Lastname} reserved {nameOfTheHotel} from {person.Start} until {person.End}");
-                                        if (hot.CheckSeason(person) == "Winter")
+                                        string season = hot.CheckSeason(person);
+
+                                        if (season == "Winter")
                                         {
                                             room = new Room("Winter", hot.Class, "1");
                                         }
-                                        if (hot.CheckSeason(person) == "Summer")
+                                        if (season == "Summer")
                                         {
                                             room = new Room("Winter", hot.Class, "1");
                                         }
-                                        if (hot.CheckSeason(person) == "Autumn")
+                                        if (season == "Autumn")
                                         {
                                             room = new Room("Winter", hot.Class, "1");
                                         }
-                                        if (hot.CheckSeason(person) == "Spring")
+                                        if (season == "Spring")
                                         {
                                             room = new Room("Winter", hot.Class, "1");
                                         }

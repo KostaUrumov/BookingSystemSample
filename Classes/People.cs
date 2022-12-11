@@ -10,7 +10,6 @@ namespace BookingSystem.Classes
     {
         private string firstname;
         private string lastname;
-        private string hotel;
         private DateTime startdate;
         private DateTime enddate;
         private int total;

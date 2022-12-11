@@ -215,7 +215,29 @@ namespace BookingSystem.Classes
         }
         public override string Cancelreservation(string name)
         {
-            
+            StringBuilder toReturn = new StringBuilder();
+
+            foreach (var item in reservations)
+            {
+                if (item.Firstname + item.Lastname == name)
+                {
+                    TimeSpan timeSpan = item.Start - DateTime.Now;
+
+                    if (timeSpan.Hours < 48)
+                    {
+                        return "Less than 48 hrs";
+                    }
+                    else
+                    {
+                        reservations.Remove(item);
+                        toReturn.AppendLine($"Reservation of {item.Firstname} {item.Lastname} on {item.Start} has been sucessfully removed;");
+                    }
+
+                }
+            }
+
+            return toReturn.ToString();
+
         }
     }
 }
