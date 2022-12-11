@@ -1,4 +1,5 @@
 ﻿using BookingSystem.Classes;
+using BookingSystem.Contracts;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,12 @@ namespace BookingSystem
         static void Main(string[] args)
         {
 
-            List<Hotel> hotelsAvailable = new List<Hotel>();
-            Hotel hotel1 = new MidClassHotel("Magnolia", 10, 5, "mid");
-            Hotel hotel2 = new LuxuryHotel("Desperado", 10, 5, "high");
-            Hotel hostel = new MidClassHotel("StayHere", 5, 0, "mid");
-            Hotel highclas = new LuxuryHotel("Kayman", 10, 6, "high");
-            Hotel hotel = new MidClassHotel("StayWithMe", 4, 1, "mid");
+            List<IHotel> hotelsAvailable = new List<IHotel>();
+            IHotel hotel1 = new MidClassHotel("Magnolia", 10, 5, "mid");
+            IHotel hotel2 = new LuxuryHotel("Desperado", 10, 5, "high");
+            IHotel hostel = new MidClassHotel("StayHere", 5, 0, "mid");
+            IHotel highclas = new LuxuryHotel("Kayman", 10, 6, "high");
+            IHotel hotel = new MidClassHotel("StayWithMe", 4, 1, "mid");
             hotelsAvailable.Add(hotel1);
             hotelsAvailable.Add(hotel2);
             hotelsAvailable.Add(hostel);

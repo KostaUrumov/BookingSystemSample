@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using BookingSystem.Contracts;
 
 namespace BookingSystem.Classes
 {
-    internal class LuxuryHotel : Hotel
+    internal class LuxuryHotel : IHotel
     {
         private List<People> reservations;
         private List<string> luxury;

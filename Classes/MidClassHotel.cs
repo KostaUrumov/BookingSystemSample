@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using BookingSystem.Contracts;
 
 namespace BookingSystem.Classes
 {
-    internal class MidClassHotel : Hotel
+    internal class MidClassHotel : IHotel
     {
         private List<People> reservations;
         private List<string> luxury;
