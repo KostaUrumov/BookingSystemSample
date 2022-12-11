@@ -13,7 +13,6 @@ namespace BookingSystem.Classes
         private string hotel;
         private DateTime startdate;
         private DateTime enddate;
-        private int totalguests;
         private int total;
         private string roomType;
         public People(string firstname, string lastname, DateTime startdate, DateTime endDate, int total, string roomtype)

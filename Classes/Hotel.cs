@@ -2,6 +2,7 @@
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.IO.Pipes;
 using System.Reflection.Metadata;
 using System.Text;
 
@@ -26,6 +27,10 @@ namespace BookingSystem.Classes
         public abstract bool CheckAvaulability(DateTime startDate, DateTime endDate, string roomtype, int totalGuests);
         public abstract void Reserve(People person);
         public abstract string ReservationsList();
+        public abstract decimal Payment(People person, Room room);
+        public abstract string CheckSeason(People person);
+        public abstract string Cancelreservation(string name);
+
         
 
 

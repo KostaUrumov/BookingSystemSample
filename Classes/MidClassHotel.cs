@@ -7,38 +7,19 @@ namespace BookingSystem.Classes
 {
     internal class MidClassHotel : Hotel
     {
-        private decimal doubleRoomCost = 30;
-        private decimal lixuryRoomCost = 45;
         private List<People> reservations;
-        private List<Room> luxury;
-        private List<Room> roomsD;
+        private List<string> luxury;
+        private List<string> roomsD;
         public MidClassHotel(string name, int doubleRooms, int luxuryRooms, string sss) : base(name, doubleRooms, luxuryRooms, sss)
         {
 
             reservations= new List<People>();
-            luxury= new List<Room>();
-            roomsD= new List<Room>();
-        }
-
-        public decimal DoubleRoomCost
-        {
-            get => this.doubleRoomCost;
-            private set
-            {
-                this.doubleRoomCost = value;
-            }
-        }
-
-        public decimal LxuryRoomCost
-        {
-            get => this.lixuryRoomCost;
-            private set
-            {
-                this.lixuryRoomCost = value;
-            }
+            luxury= new List<string>();
+            roomsD= new List<string>();
         }
 
         public int count { get { return reservations.Count;} }
+        public IReadOnlyCollection<People> Reserved { get { return reservations.AsReadOnly(); } }
 
         public override bool CheckAvaulability(DateTime startDate, DateTime endDate, string roomtype, int totalGuests)
         {
@@ -112,6 +93,15 @@ namespace BookingSystem.Classes
         public override void Reserve(People person)
         {
             reservations.Add(person);
+            if (person.RoomType == "1")
+            {
+                luxury.Add("one");
+            }
+
+            else if (person.RoomType == "2")
+            {
+                roomsD.Add("one");
+            }
 
         }
 
@@ -119,12 +109,16 @@ namespace BookingSystem.Classes
         {
             StringBuilder toReturn = new StringBuilder();
             toReturn.AppendLine($"New Hotel Build {this.Name} with double rooms {this.DoubleRoomsCount} and luxury rooms {this.LuxuryRoomsCount}");
-            toReturn.AppendLine($"Prices are: Double room {this.doubleRoomCost}, Luxury room {this.LxuryRoomCost} all per one night");
             return toReturn.ToString();
         }
 
         public override string ReservationsList()
         {
+            if (this.reservations.Count == 0)
+            {
+                return "none";
+            }
+
             StringBuilder toReturn = new StringBuilder();
             toReturn.AppendLine("Reservations:");
             foreach (var rese in reservations)
@@ -134,6 +128,94 @@ namespace BookingSystem.Classes
             Console.WriteLine();
 
             return toReturn.ToString();
+        }
+        public override decimal Payment(People person, Room room)
+        {
+            TimeSpan duration = person.End - person.Start;
+            int stayLength = int.Parse(duration.TotalDays.ToString());
+            decimal payment = 1;
+            if (person.RoomType == "1")
+            {
+                if (stayLength > 5)
+                {
+                    payment = (payment * room.Price) * 0.85m;
+                }
+                else
+                {
+                    payment = payment * room.Price;
+                }
+            }
+
+            if (person.RoomType == "2")
+            {
+                if (stayLength > 5)
+                {
+                    payment = (payment * room.Price) * 0.85m;
+                }
+                else
+                {
+                    payment = payment * room.Price;
+                }
+            }
+
+            return payment;
+        }
+        public override string CheckSeason(People person)
+        {
+            if (person.Start.Month == 1)
+            {
+                return "Winter";
+            }
+            if (person.Start.Month == 2)
+            {
+                return "Winter";
+            }
+            if (person.Start.Month == 3)
+            {
+                return "Winter";
+            }
+            if (person.Start.Month == 4)
+            {
+                return "Spring";
+            }
+            if (person.Start.Month == 5)
+            {
+                return "Spring";
+            }
+            if (person.Start.Month == 6)
+            {
+                return "Spring";
+            }
+            if (person.Start.Month == 7)
+            {
+                return "Summer";
+            }
+            if (person.Start.Month == 8)
+            {
+                return "Summer";
+            }
+            if (person.Start.Month == 9)
+            {
+                return "Summer";
+            }
+            if (person.Start.Month == 10)
+            {
+                return "Autumn";
+            }
+            if (person.Start.Month == 11)
+            {
+                return "Autumn";
+            }
+            if (person.Start.Month == 12)
+            {
+                return "Autumn";
+            }
+
+            return "Autumn";
+        }
+        public override string Cancelreservation(string name)
+        {
+            
         }
     }
 }

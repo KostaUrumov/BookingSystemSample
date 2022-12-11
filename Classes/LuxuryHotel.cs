@@ -1,40 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace BookingSystem.Classes
 {
     internal class LuxuryHotel : Hotel
     {
-        private decimal doubleRoomCost = 50;
-        private decimal lixuryRoomCost = 65;
         private List<People> reservations;
-        private List<Room> luxury;
-        private List<Room> roomsD;
+        private List<string> luxury;
+        private List<string> roomsD;
         public LuxuryHotel(string name, int doubleRooms, int luxuryRooms, string mid) : base(name, doubleRooms, luxuryRooms, mid)
         {
             reservations = new List<People>();
-            luxury= new List<Room>();
-            roomsD = new List<Room>();
+            luxury= new List<string>();
+            roomsD = new List<string>();
         }
-        public decimal DoubleRoomCost
-        {
-            get => this.doubleRoomCost;
-            private set
-            {
-                this.doubleRoomCost = value;
-            }
-        }
-
-        public decimal LxuryRoomCost
-        {
-            get => this.lixuryRoomCost;
-            private set
-            {
-                this.lixuryRoomCost = value;
-            }
-        }
-
+   
         public override bool CheckAvaulability(DateTime startDate, DateTime endDate, string roomtype, int totalGuests)
         {
             if (roomtype == "1")
@@ -103,21 +85,20 @@ namespace BookingSystem.Classes
             return false;
 
         }
+
+        public IReadOnlyCollection<People> Reserved { get { return reservations.AsReadOnly(); }  }
             
         public override void Reserve(People person)
         {
             reservations.Add(person);
             if (person.RoomType == "1")
             {
-                Room room = new Room(person.Start, person.End);
-                luxury.Add(room);
-
+                luxury.Add("one");
             }
 
             else if (person.RoomType == "2")
             {
-                Room room = new Room(person.Start, person.End);
-                roomsD.Add(room);
+                roomsD.Add("one");
             }
         }   
 
@@ -125,12 +106,15 @@ namespace BookingSystem.Classes
         {
             StringBuilder toReturn= new StringBuilder();
             toReturn.AppendLine($"New Hotel Build {this.Name} with double rooms {this.DoubleRoomsCount} and luxury rooms {this.LuxuryRoomsCount}");
-            toReturn.AppendLine($"Prices are: Double room {this.doubleRoomCost}, Luxury room {this.LxuryRoomCost} all per one night");
             return toReturn.ToString();
         }
 
         public override string ReservationsList()
         {
+            if (this.reservations.Count == 0)
+            {
+                return "none";
+            }
             StringBuilder toReturn = new StringBuilder();
             toReturn.AppendLine("Reservations:");
             foreach (var rese in reservations)
@@ -141,5 +125,117 @@ namespace BookingSystem.Classes
 
             return toReturn.ToString();
         }
+
+        public override decimal Payment(People person, Room room)
+        {
+            TimeSpan duration = person.End - person.Start;
+            int stayLength = int.Parse(duration.TotalDays.ToString());
+            decimal payment = 1;
+            if (person.RoomType == "1")
+            {
+                if (stayLength > 5)
+                {
+                    payment = (payment * room.Price) * 0.85m;
+                }
+                else
+                {
+                    payment = payment * room.Price;
+                }
+            }
+
+            if (person.RoomType == "2")
+            {
+                if (stayLength > 5)
+                {
+                    payment = (payment * room.Price) * 0.85m;
+                }
+                else
+                {
+                    payment = payment * room.Price;
+                }
+            }
+            
+            return payment;
+        }
+        public override string CheckSeason(People person)
+        {
+            if (person.Start.Month == 1)
+            {
+                return "Winter";
+            }
+            if (person.Start.Month == 2)
+            {
+                return "Winter";
+            }
+            if (person.Start.Month == 3)
+            {
+                return "Winter";
+            }
+            if (person.Start.Month == 4)
+            {
+                return "Spring";
+            }
+            if (person.Start.Month == 5)
+            {
+                return "Spring";
+            }
+            if (person.Start.Month == 6)
+            {
+                return "Spring";
+            }
+            if (person.Start.Month == 7)
+            {
+                return "Summer";
+            }
+            if (person.Start.Month == 8)
+            {
+                return "Summer";
+            }
+            if (person.Start.Month == 9)
+            {
+                return "Summer";
+            }
+            if (person.Start.Month == 10)
+            {
+                return "Autumn";
+            }
+            if (person.Start.Month == 11)
+            {
+                return "Autumn";
+            }
+            if (person.Start.Month == 12)
+            {
+                return "Autumn";
+            }
+
+            return "Autumn";
+        }
+        public override string Cancelreservation(string name)
+        {
+            StringBuilder toReturn = new StringBuilder();
+            
+            foreach (var item in reservations)
+            {
+                if (item.Firstname + item.Lastname == name)
+                {
+                    TimeSpan timeSpan = item.Start - DateTime.Now;
+
+                    if (timeSpan.Hours < 48)
+                    {
+                        return "Less than 48 hrs";
+                    }
+                    else
+                    {
+                        reservations.Remove(item);
+                        toReturn.AppendLine($"Reservation of {item.Firstname} {item.Lastname} on {item.Start} has been sucessfully removed;");
+                    }
+
+                }
+            }
+
+            return toReturn.ToString();
+            
+        }
+
     }
 }
