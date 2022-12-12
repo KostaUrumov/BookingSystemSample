@@ -94,13 +94,6 @@ namespace BookingSystem.Classes
             }
         }
 
-
-        public void SettingPrice()
-        {
-            
-        }
-               
-        
         
     }
 }

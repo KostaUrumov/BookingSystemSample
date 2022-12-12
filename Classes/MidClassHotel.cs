@@ -8,23 +8,20 @@ namespace BookingSystem.Classes
 {
     internal class MidClassHotel : IHotel
     {
-        private List<People> reservations;
+        private Dictionary<int, People> reservations;
         private List<string> luxury;
         private List<string> roomsD;
         public MidClassHotel(string name, int doubleRooms, int luxuryRooms, string sss) : base(name, doubleRooms, luxuryRooms, sss)
         {
 
-            reservations= new List<People>();
+            reservations= new Dictionary<int, People>();
             luxury= new List<string>();
             roomsD= new List<string>();
         }
 
-        public int count { get { return reservations.Count;} }
-        public IReadOnlyCollection<People> Reserved { get { return reservations.AsReadOnly(); } }
-
-        public override bool CheckAvaulability(DateTime startDate, DateTime endDate, string roomtype, int totalGuests)
+        public override bool CheckAvaulability(People person)
         {
-            if (roomtype == "1")
+            if (person.RoomType == "1")
             {
                 if (luxury.Count < this.LuxuryRoomsCount)
                 {
@@ -32,20 +29,20 @@ namespace BookingSystem.Classes
                 }
                 else
                 {
-                    foreach (var st in reservations)
+                    for (int i = 0; i < reservations.Count; i++)
                     {
-                        if (st.RoomType == "1")
+                        if (reservations[i].RoomType == "1")
                         {
-                            if (startDate < st.Start && endDate < st.Start)
+                            if (person.Start < reservations[i].Start && person.End < reservations[i].Start)
                             {
                                 return true;
                             }
 
-                            else if (startDate > st.End)
+                            else if (person.Start > reservations[i].End)
                             {
                                 return true;
                             }
-
+                            
                         }
 
                     }
@@ -55,7 +52,7 @@ namespace BookingSystem.Classes
                 return false;
             }
 
-            if (roomtype == "2")
+            if (person.RoomType == "2")
             {
                 if (roomsD.Count < this.DoubleRoomsCount)
                 {
@@ -63,16 +60,16 @@ namespace BookingSystem.Classes
                 }
                 else
                 {
-                    foreach (var st in reservations)
+                    for (int i = 0; i < reservations.Count; i++)
                     {
-                        if (st.RoomType == "2")
+                        if (reservations[i].RoomType == "1")
                         {
-                            if (startDate < st.Start && endDate < st.Start)
+                            if (person.Start < reservations[i].Start && person.End < reservations[i].Start)
                             {
                                 return true;
                             }
 
-                            else if (startDate > st.End)
+                            else if (person.Start > reservations[i].End)
                             {
                                 return true;
                             }
@@ -82,18 +79,15 @@ namespace BookingSystem.Classes
                     }
 
                 }
-
-                return false;
-
             }
 
             return false;
 
         }
 
-        public override void Reserve(People person)
+        public override void Reserve(int id, People person)
         {
-            reservations.Add(person);
+            reservations.Add(id, person);
             if (person.RoomType == "1")
             {
                 luxury.Add("one");
@@ -105,30 +99,13 @@ namespace BookingSystem.Classes
             }
 
         }
-
         public override string MyData()
         {
             StringBuilder toReturn = new StringBuilder();
             toReturn.AppendLine($"New Hotel Build {this.Name}. Type is {this.GetType().Name} with double rooms {this.DoubleRoomsCount} and luxury rooms {this.LuxuryRoomsCount}");
             return toReturn.ToString();
         }
-        public override string ReservationsList()
-        {
-            if (this.reservations.Count == 0)
-            {
-                return "none";
-            }
-
-            StringBuilder toReturn = new StringBuilder();
-            toReturn.AppendLine("Reservations:");
-            foreach (var rese in reservations)
-            {
-                toReturn.Append($"- {rese.Firstname} {rese.Lastname} will stay at {this.Name} from {rese.Start.Date} till {rese.End.Date}");
-            }
-            Console.WriteLine();
-
-            return toReturn.ToString();
-        }
+       
         public override decimal Payment(People person, Room room)
         {
             TimeSpan duration = person.End - person.Start;
@@ -213,31 +190,7 @@ namespace BookingSystem.Classes
 
             return "Autumn";
         }
-        public override string Cancelreservation(string name)
-        {
-            StringBuilder toReturn = new StringBuilder();
-
-            foreach (var item in reservations)
-            {
-                if (item.Firstname + item.Lastname == name)
-                {
-                    TimeSpan timeSpan = item.Start - DateTime.Now;
-
-                    if (timeSpan.Hours < 48)
-                    {
-                        return "Less than 48 hrs";
-                    }
-                    else
-                    {
-                        reservations.Remove(item);
-                        toReturn.AppendLine($"Reservation of {item.Firstname} {item.Lastname} on {item.Start} has been sucessfully removed;");
-                    }
-
-                }
-            }
-
-            return toReturn.ToString();
-
-        }
+        
+        
     }
 }

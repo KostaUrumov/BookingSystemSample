@@ -4,6 +4,8 @@ using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Transactions;
 using System.Xml.Linq;
 
 namespace BookingSystem
@@ -12,7 +14,7 @@ namespace BookingSystem
     {
         static void Main(string[] args)
         {
-
+            Dictionary <int,People> reseravionDict = new Dictionary<int,People>();
             List<IHotel> hotelsAvailable = new List<IHotel>();
             IHotel hotel1 = new MidClassHotel("Magnolia", 10, 5, "mid");
             IHotel hotel2 = new LuxuryHotel("Desperado", 10, 5, "high");
@@ -24,20 +26,24 @@ namespace BookingSystem
             hotelsAvailable.Add(hostel);
             hotelsAvailable.Add(highclas);
             hotelsAvailable.Add(hotel);
+            
 
             foreach (var item in hotelsAvailable)
             {
                 Console.WriteLine(item.MyData());
             }
 
-            Console.WriteLine("What do you want to do? Select [1] - reservations, or [2] - cancelation reservarion.");
-            Console.WriteLine("Remember it is not possible to cancel reservation if it starts within next 48 hrs!");
-
-            string action = Console.ReadLine();
-            if (action == "1")
+            while (true)
             {
+                Console.WriteLine("What do you want to do? Select [1] - reservations, [2] - cancelation reservarion, or [3] - No action.");
+                Console.WriteLine("Remember it is not possible to cancel reservation if it starts within next 48 hrs!");
+                string action = Console.ReadLine();
 
-                while (true)
+                if (action == "3")
+                {
+                    break;
+                }
+                if (action == "1")
                 {
                     int thisPersonReserved = 0;
                     Console.WriteLine("Please enter your name. Type end if no more reservations needed.");
@@ -49,8 +55,21 @@ namespace BookingSystem
                     }
 
                     Console.WriteLine("What dates do you want to reserve?");
+
                     DateTime startDate = DateTime.Parse(Console.ReadLine());
+                    DateTime now = DateTime.Now;
+                    if (startDate <= now)
+                    {
+                        Console.WriteLine("You can not select earlier than today date.");
+                        continue;
+                    }
                     DateTime endDate = DateTime.Parse(Console.ReadLine());
+
+                    if (endDate <= startDate)
+                    {
+                        Console.WriteLine("End date of your styay can not be earlier or equal to start date");
+                        continue;
+                    }
                     while (true)
                     {
                         if (thisPersonReserved == 1)
@@ -83,11 +102,15 @@ namespace BookingSystem
 
                                     Console.WriteLine("How many Guests do we expect?");
                                     int totalGuests = int.Parse(Console.ReadLine());
-                                    if (hot.CheckAvaulability(startDate, endDate, roomtype, totalGuests) == true)
+                                    People person = new People(names[0], names[1], startDate, endDate, totalGuests, roomtype, nameOfTheHotel);
+                                    if (hot.CheckAvaulability(person) == true)
                                     {
-                                        People person = new People(names[0], names[1], startDate, endDate, totalGuests, roomtype);
-                                        hot.Reserve(person);
-                                        Console.WriteLine($"{person.Firstname} {person.Lastname} reserved {nameOfTheHotel} from {person.Start} until {person.End}");
+                                        
+                                        Random rand = new Random();
+                                        int random = rand.Next(1000000);
+                                        reseravionDict.Add(random, person);
+                                        hot.Reserve(random, person);
+                                        Console.WriteLine($"Reservation {random} of {person.Firstname} {person.Lastname} reserved {nameOfTheHotel} from {person.Start} until {person.End}");
                                         string season = hot.CheckSeason(person);
 
                                         if (season == "Winter")
@@ -106,13 +129,14 @@ namespace BookingSystem
                                         {
                                             room = new Room("Winter", hot.Class, "1", 0);
                                         }
-                                        
+
                                         Console.WriteLine($"Total payment is {hot.Payment(person, room),0:f2}");
                                         thisPersonReserved++;
                                         break;
                                     }
                                     else
                                     {
+                                        Console.WriteLine("No rooms available during this period.");
                                         continue;
                                     }
 
@@ -121,11 +145,14 @@ namespace BookingSystem
                                 {
                                     Console.WriteLine("How many Guests do we expect?");
                                     int totalGuests = int.Parse(Console.ReadLine());
-                                    if (hot.CheckAvaulability(startDate, endDate, roomtype, totalGuests) == true)
+                                    People person = new People(names[0], names[1], startDate, endDate, totalGuests, roomtype, nameOfTheHotel);
+                                    if (hot.CheckAvaulability(person) == true)
                                     {
-                                        People person = new People(names[0], names[1], startDate, endDate, totalGuests, roomtype);
-                                        hot.Reserve(person);
-                                        Console.WriteLine($"{person.Firstname} {person.Lastname} reserved {nameOfTheHotel} from {person.Start} until {person.End}");
+                                        Random rand = new Random();
+                                        int random = rand.Next(1000);
+                                        reseravionDict.Add(random, person);
+                                        hot.Reserve(random, person);
+                                        Console.WriteLine($"Reservation {random} of {person.Firstname} {person.Lastname} reserved {nameOfTheHotel} from {person.Start} until {person.End}");
                                         if (hot.CheckSeason(person) == "Winter")
                                         {
                                             room = new Room("Winter", hot.Class, "2", 0);
@@ -148,67 +175,34 @@ namespace BookingSystem
                                     }
                                     else
                                     {
+                                        Console.WriteLine("No rooms available during this period.");
                                         continue;
                                     }
                                 }
                             }
+
+                            else
+                            {
+                                continue;
+                            }
                         }
 
                     }
-
-
                 }
-            }
 
-            if (action == "2")
-            {
-                Console.WriteLine("In which hotel is your reservation");
-                string reservedHotel = Console.ReadLine();
-                foreach (var item in hotelsAvailable)
+                if (action == "2")
                 {
-                    if (item.Name == reservedHotel)
+                    Console.WriteLine("Add your reservation ID");
+                    int reservationID = int.Parse(Console.ReadLine());
+
+                    if (reseravionDict.ContainsKey(reservationID))
                     {
-                        Console.WriteLine("What is your name?");
-                        string nameOfReservation = Console.ReadLine();
-                        if (item.Class == "mid")
-                        {
-                            MidClassHotel htel = (MidClassHotel)item;
-                            foreach (var peopleIn in htel.Reserved)
-                            {
-                                if (peopleIn.Firstname + peopleIn.Lastname == nameOfReservation)
-                                {
-                                    Console.WriteLine(nameOfReservation);
-                                }
-                            }
-                        }
-                        if (item.Class == "high")
-                        {
-                            LuxuryHotel htel = (LuxuryHotel)item;
-                            foreach (var peopleIn in htel.Reserved)
-                            {
-                                if (peopleIn.Firstname + peopleIn.Lastname == nameOfReservation)
-                                {
-                                    Console.WriteLine(nameOfReservation);
-                                }
-                            }
-                        }
+                        Console.WriteLine($"Reservation with ID {reservationID} of {reseravionDict[reservationID].Firstname} {reseravionDict[reservationID].Lastname} starting on {reseravionDict[reservationID].Start} has been sucessfully deleted");
+                        
+                        reseravionDict.Remove(reservationID);
                     }
                 }
-               
-                
             }
-
-
-            foreach (var reserved in hotelsAvailable)
-            {
-                if (reserved.ReservationsList() == "none")
-                {
-                    continue;
-                }
-              
-              Console.WriteLine(reserved.ReservationsList());
-            }
-           
         }
     }
 }

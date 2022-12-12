@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookingSystem.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,8 @@ namespace BookingSystem.Classes
         private DateTime enddate;
         private int total;
         private string roomType;
-        public People(string firstname, string lastname, DateTime startdate, DateTime endDate, int total, string roomtype)
+        private string hotel;
+        public People(string firstname, string lastname, DateTime startdate, DateTime endDate, int total, string roomtype, string hotelName)
         {
             this.Firstname = firstname;
             this.Lastname = lastname;
@@ -22,6 +24,7 @@ namespace BookingSystem.Classes
             this.End = endDate;
             this.Total = total;
             this.RoomType = roomtype;
+            this.HotelName= hotelName;
         }
 
         public string Firstname
@@ -67,5 +70,6 @@ namespace BookingSystem.Classes
         public DateTime End { get => this.enddate; private set { this.enddate = value; } }
         public int Total { get => this.total; private set { this.total = value; } }
         public string RoomType { get => this.roomType; private set { this.roomType = value; } }
+        public string HotelName { get => this.hotel; private set { this.hotel = value; } }
     }
 }
