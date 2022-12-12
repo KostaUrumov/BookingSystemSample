@@ -106,7 +106,7 @@ namespace BookingSystem.Classes
         public override string MyData()
         {
             StringBuilder toReturn= new StringBuilder();
-            toReturn.AppendLine($"New Hotel Build {this.Name} with double rooms {this.DoubleRoomsCount} and luxury rooms {this.LuxuryRoomsCount}");
+            toReturn.AppendLine($"New Hotel Build {this.Name}. Type is {this.GetType().Name} with double rooms {this.DoubleRoomsCount} and luxury rooms {this.LuxuryRoomsCount}");
             return toReturn.ToString();
         }
 
